@@ -47,7 +47,7 @@ public class DiscordRP {
 	
 	public void update(String firstLine, String secondLine) {
 		DiscordRichPresence.Builder b = new DiscordRichPresence.Builder(secondLine);
-		b.setBigImage("logo", "");
+		b.setBigImage("large", "");
 		b.setDetails(firstLine);
 		b.setStartTimestamps(created);
 		
