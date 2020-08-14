@@ -59,10 +59,18 @@ public class ServerList
 
     private void loadFeaturedServers() {
 		this.addServerData (new ServerDataFeatured("Hypixel","mc.hypixel.net"));
-		this.addServerData (new ServerDataFeatured("HiveMC","eu.hivemc.net"));
-		this.addServerData (new ServerDataFeatured("Syuu","china.syuu.net"));		
 	}
 
+    public int getFeaturedServerCount(){
+    	int count = 0;
+    	for(ServerData sd : this.servers) {
+    		if(sd instanceof ServerDataFeatured) {
+    			count++;
+    		}
+    	}
+    	return count;
+    }
+    
 	/**
      * Runs getNBTCompound on each ServerData instance, puts everything into a "servers" NBT list and writes it to
      * servers.dat.

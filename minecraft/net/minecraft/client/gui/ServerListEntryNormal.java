@@ -23,7 +23,6 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
 {
     private static final Logger logger = LogManager.getLogger();
@@ -209,6 +208,9 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
                 }
             }
 
+            if(isFeaturedServer) {
+
+            
             if (this.field_148303_c.func_175392_a(this, slotIndex))
             {
                 if (k1 < 16 && l1 < 16)
@@ -232,6 +234,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
                     Gui.drawModalRectWithCustomSizedTexture(x, y, 64.0F, 0.0F, 32, 32, 256.0F, 256.0F);
                 }
             }
+          }
         }
     }
 
@@ -314,17 +317,19 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
                 return true;
             }
 
-            if (p_148278_5_ < 16 && p_148278_6_ < 16 && this.field_148303_c.func_175392_a(this, slotIndex))
-            {
-                this.field_148303_c.func_175391_a(this, slotIndex, GuiScreen.isShiftKeyDown());
-                return true;
-            }
+            if(!(this.field_148303_c.getServerList().getServerData(slotIndex) instanceof ServerDataFeatured)) {        	
+            	if (p_148278_5_ < 16 && p_148278_6_ < 16 && this.field_148303_c.func_175392_a(this, slotIndex))
+                {
+                    this.field_148303_c.func_175391_a(this, slotIndex, GuiScreen.isShiftKeyDown());
+                    return true;
+                }
 
-            if (p_148278_5_ < 16 && p_148278_6_ > 16 && this.field_148303_c.func_175394_b(this, slotIndex))
-            {
-                this.field_148303_c.func_175393_b(this, slotIndex, GuiScreen.isShiftKeyDown());
-                return true;
-            }
+                if (p_148278_5_ < 16 && p_148278_6_ > 16 && this.field_148303_c.func_175394_b(this, slotIndex))
+                {
+                    this.field_148303_c.func_175393_b(this, slotIndex, GuiScreen.isShiftKeyDown());
+                    return true;
+                }
+            }         
         }
 
         this.field_148303_c.selectServer(slotIndex);
