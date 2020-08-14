@@ -13,6 +13,9 @@ import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+
+import knlc.Client;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -464,6 +467,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      */
     private void startGame() throws LWJGLException, IOException
     {
+    	Client.getInstance().init();
         this.gameSettings = new GameSettings(this, this.mcDataDir);
         this.defaultResourcePacks.add(this.mcDefaultResourcePack);
         this.startTimerHackThread();
@@ -1028,6 +1032,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     {
         try
         {
+        	Client.getInstance().shutdown();
             this.stream.shutdownStream();
             logger.info("Stopping!");
 
@@ -2313,6 +2318,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         networkmanager.sendPacket(new C00Handshake(47, socketaddress.toString(), 0, EnumConnectionState.LOGIN));
         networkmanager.sendPacket(new C00PacketLoginStart(this.getSession().getProfile()));
         this.myNetworkManager = networkmanager;
+        Client.getInstance().getDiscordRP().update("Playing Singleplayer", "In Game");
     }
 
     /**
