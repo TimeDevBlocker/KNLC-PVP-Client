@@ -1,4 +1,4 @@
-package knlc.gui;
+package knlc.utils;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.UnicodeFont;
@@ -248,18 +249,21 @@ public class UnicodeFontRenderer {
         drawCenteredString(text, x, y, color);
     }
 
-    public float getWidth(String s) {
+    public float getWidth(final String s) {
         if (cachedStringWidth.size() > 1000)
             cachedStringWidth.clear();
-        return cachedStringWidth.computeIfAbsent(s, e -> {
-            float width = 0.0F;
-            String str = StringUtils.stripControlCodes(s);
-            for (char c : str.toCharArray()) {
-                width += unicodeFont.getWidth(Character.toString(c)) + this.kerning;
-            }
+        return cachedStringWidth.computeIfAbsent(s, new Function<String, Float>() {
+			@Override
+			public Float apply(String e) {
+			    float width = 0.0F;
+			    String str = StringUtils.stripControlCodes(s);
+			    for (char c : str.toCharArray()) {
+			        width += unicodeFont.getWidth(Character.toString(c)) + UnicodeFontRenderer.this.kerning;
+			    }
 
-            return width / 2.0F / antiAliasingFactor;
-        });
+			    return width / 2.0F / antiAliasingFactor;
+			}
+		});
 
     }
 

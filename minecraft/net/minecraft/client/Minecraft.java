@@ -15,6 +15,7 @@ import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 
 import knlc.Client;
+import knlc.gui.SplashProgress;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -493,7 +494,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.refreshResources();
         this.renderEngine = new TextureManager(this.mcResourceManager);
         this.mcResourceManager.registerReloadListener(this.renderEngine);
-        this.drawSplashScreen(this.renderEngine);
+        //this.drawSplashScreen(this.renderEngine);
+        SplashProgress.drawSplash(getTextureManager());
         this.initStream();
         this.skinManager = new SkinManager(this.renderEngine, new File(this.fileAssets, "skins"), this.sessionService);
         this.saveLoader = new AnvilSaveConverter(new File(this.mcDataDir, "saves"));
@@ -546,17 +548,24 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.renderEngine.loadTickableTexture(TextureMap.locationBlocksTexture, this.textureMapBlocks);
         this.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
         this.textureMapBlocks.setBlurMipmapDirect(false, this.gameSettings.mipmapLevels > 0);
+        SplashProgress.setProgress(2, "Minecraft - ModelManager");
         this.modelManager = new ModelManager(this.textureMapBlocks);
         this.mcResourceManager.registerReloadListener(this.modelManager);
+        SplashProgress.setProgress(3, "Minecraft - RenderItem");
         this.renderItem = new RenderItem(this.renderEngine, this.modelManager);
+        SplashProgress.setProgress(4, "Minecraft - RenderManager");
         this.renderManager = new RenderManager(this.renderEngine, this.renderItem);
+        SplashProgress.setProgress(5, "Minecraft - ItemRenderer");
         this.itemRenderer = new ItemRenderer(this);
         this.mcResourceManager.registerReloadListener(this.renderItem);
+        SplashProgress.setProgress(6, "Minecraft - EntityRenderer");
         this.entityRenderer = new EntityRenderer(this, this.mcResourceManager);
         this.mcResourceManager.registerReloadListener(this.entityRenderer);
         this.blockRenderDispatcher = new BlockRendererDispatcher(this.modelManager.getBlockModelShapes(), this.gameSettings);
+        SplashProgress.setProgress(6, "Minecraft - BlockRenderer");
         this.mcResourceManager.registerReloadListener(this.blockRenderDispatcher);
         this.renderGlobal = new RenderGlobal(this);
+        SplashProgress.setProgress(7, "Minecraft - RenderGlobal");
         this.mcResourceManager.registerReloadListener(this.renderGlobal);
         this.guiAchievement = new GuiAchievement(this);
         GlStateManager.viewport(0, 0, this.displayWidth, this.displayHeight);
