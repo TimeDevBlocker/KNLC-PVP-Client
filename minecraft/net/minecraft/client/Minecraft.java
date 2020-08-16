@@ -15,6 +15,7 @@ import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 
 import knlc.Client;
+import knlc.event.impl.ClientTickEvent;
 import knlc.gui.SplashProgress;
 
 import java.awt.image.BufferedImage;
@@ -629,7 +630,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     private void createDisplay() throws LWJGLException
     {
         Display.setResizable(true);
-        Display.setTitle("Minecraft 1.8.8");
+        Display.setTitle("Skyblock Client | Minecraft 1.8.8");
 
         try
         {
@@ -2255,6 +2256,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             this.myNetworkManager.processReceivedPackets();
         }
 
+        new ClientTickEvent().call();
+        
         this.mcProfiler.endSection();
         this.systemTime = getSystemTime();
     }

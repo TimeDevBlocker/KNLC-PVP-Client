@@ -1,5 +1,8 @@
 package knlc;
 
+import org.apache.http.impl.NoConnectionReuseStrategy;
+
+import knlc.event.EventManager;
 import knlc.gui.SplashProgress;
 
 public class Client {
@@ -14,6 +17,7 @@ public class Client {
 	public void init() {
 		SplashProgress.setProgress(1, "Client - Initalising Discord RP");
 		discordRP.start();
+		
 	}
 	
 	public void shutdown() {

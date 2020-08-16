@@ -7,7 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.util.MathHelper;
 
-public class LayerCape implements LayerRenderer
+public class LayerCape implements LayerRenderer<AbstractClientPlayer>
 {
     private final RenderPlayer playerRenderer;
     private static final String __OBFID = "CL_00002425";
@@ -69,8 +69,4 @@ public class LayerCape implements LayerRenderer
         return false;
     }
 
-    public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
-    {
-        this.doRenderLayer((AbstractClientPlayer)entitylivingbaseIn, p_177141_2_, p_177141_3_, partialTicks, p_177141_5_, p_177141_6_, p_177141_7_, scale);
-    }
 }

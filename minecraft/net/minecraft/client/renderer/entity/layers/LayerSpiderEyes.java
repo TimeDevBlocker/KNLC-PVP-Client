@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer.entity.layers;
 
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderSpider;
@@ -9,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import optifine.Config;
 import shadersmod.client.Shaders;
 
-public class LayerSpiderEyes implements LayerRenderer
+public class LayerSpiderEyes implements LayerRenderer<AbstractClientPlayer>
 {
     private static final ResourceLocation SPIDER_EYES = new ResourceLocation("textures/entity/spider_eyes.png");
     private final RenderSpider spiderRenderer;
@@ -62,8 +63,10 @@ public class LayerSpiderEyes implements LayerRenderer
         return false;
     }
 
-    public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
-    {
-        this.doRenderLayer((EntitySpider)entitylivingbaseIn, p_177141_2_, p_177141_3_, partialTicks, p_177141_5_, p_177141_6_, p_177141_7_, scale);
-    }
+	@Override
+	public void doRenderLayer(AbstractClientPlayer entitylivingbaseIn, float p_177141_2_, float p_177141_3_,
+			float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
+		// TODO Auto-generated method stub
+		
+	}
 }
