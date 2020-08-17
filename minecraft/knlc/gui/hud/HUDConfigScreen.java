@@ -10,6 +10,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.function.Predicate;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 
@@ -108,7 +109,7 @@ private final HashMap<IRenderer, ScreenPosition> renderers = new HashMap<IRender
 	
 	private void adjustBounds(IRenderer renderer, ScreenPosition pos) {
 		
-		ScaledResolution res = new ScaledResolution(mc);
+		ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
 		
 		int screenWidth = res.getScaledWidth();
 		int screenHeight = res.getScaledHeight();
