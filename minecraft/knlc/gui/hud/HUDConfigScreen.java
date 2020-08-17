@@ -60,6 +60,8 @@ private final HashMap<IRenderer, ScreenPosition> renderers = new HashMap<IRender
 				this.drawHollowRect(pos.getAbsoluteX(), pos.getAbsoluteY(), renderer.getWidth(), renderer.getHeight(), 0xFF00FFFF);
 				
 			}
+			
+			this.zLevel = zBackup;
 		}
 	private void drawHollowRect(int x, int y, int w, int h, int color) {
 		this.drawHorizontalLine(x, x + w, y, color);
