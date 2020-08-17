@@ -1,17 +1,23 @@
 package knlc.gui.hud;
 
+import java.awt.Adjustable;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Optional;
+
 import org.lwjgl.input.Keyboard;
+
+import java.util.function.Predicate;
+
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 
 public class HUDConfigScreen extends GuiScreen{
 
 private final HashMap<IRenderer, ScreenPosition> renderers = new HashMap<IRenderer, ScreenPosition>();
 	
-	private Optional<IRenderer> selectedRender = Optional.empty();
+	private Optional<IRenderer> selectedRenderer = Optional.empty();
 	
 	private int prevX, prevY;
 
@@ -65,7 +71,92 @@ private final HashMap<IRenderer, ScreenPosition> renderers = new HashMap<IRender
 	@Override
 		protected void keyTyped(char typedChar, int keyCode) throws IOException {
 			if(keyCode == Keyboard.KEY_ESCAPE) {
-				
+				renderers.entrySet().forEach((entry) -> {
+					entry.getKey().save(entry.getValue());
+				});
+				this.mc.displayGuiScreen(null);
+		    }
+	    }
+	
+	@Override
+		protected void mouseClickMove(int x, int y, int button, long time) {
+			if(selectedRenderer.isPresent()) {
+				moveSelectedRenderBy(x - prevX, y - prevY);
 			}
+			
+			this.prevX = x;
+			this.prevY = y;
 		}
+	private void moveSelectedRenderBy(int offsetX, int offsetY) {
+		IRenderer renderer = selectedRenderer.get();
+		ScreenPosition pos = renderers.get(renderer);
+		
+		pos.setAbsolute(pos.getAbsoluteX() + offsetX, pos.getAbsoluteY() + offsetY);
+		
+		adjustBounds(renderer, pos);
+	}
+	@Override
+		public void onGuiClosed() {
+		for(IRenderer renderer : renderers.keySet()) {
+			renderer.save(renderers.get(renderer));
+		}
+		}
+	@Override
+		public boolean doesGuiPauseGame() {
+			return true;
+		}
+	
+	private void adjustBounds(IRenderer renderer, ScreenPosition pos) {
+		
+		ScaledResolution res = new ScaledResolution(mc);
+		
+		int screenWidth = res.getScaledWidth();
+		int screenHeight = res.getScaledHeight();
+		
+		int absoluteX = Math.max(0, Math.min(pos.getAbsoluteX(), Math.max(screenWidth - renderer.getWidth(), 0)));
+		int absoluteY = Math.max(0, Math.min(pos.getAbsoluteY(), Math.max(screenHeight - renderer.getHeight(), 0)));
+		
+		pos.setAbsolute(absoluteX, absoluteY);
+	}
+	
+	@Override
+		protected void mouseClicked(int x, int y, int mouseonuseButton) throws IOException {
+			this.prevX = x;
+			this.prevY = y;
+			
+			loadMouseOver(x,y);
+		}
+	
+	private void loadMouseOver(int x, int y) {
+		this.selectedRenderer = renderers.keySet().stream().filter(new MouseOverFinder(x, y)).findFirst();
+	}
+	
+	private class MouseOverFinder implements Predicate<IRenderer>{
+
+		private int mouseX, mouseY;
+		
+		public MouseOverFinder(int x, int y) {
+			this.mouseX = x;
+			this.mouseY = y;
+		}
+
+		@Override
+		public boolean test(IRenderer renderer) {
+			ScreenPosition pos = renderers.get(renderer);
+			
+			int absoluteX = pos.getAbsoluteX();
+			int absoluteY = pos.getAbsoluteY();
+			
+			if(mouseX >= absoluteX && mouseX <= absoluteX + renderer.getWidth()) {
+				if(mouseY >= absoluteY && mouseY <= absoluteY + renderer.getHeight()) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		
+		
+	}
 }
+

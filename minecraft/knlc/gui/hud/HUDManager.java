@@ -16,11 +16,11 @@ import net.minecraft.client.gui.GuiScreen;
 
 public class HUDManager{
 
-	private HUDManager() {}
+	public HUDManager() {}
 	
 	private static HUDManager instance = null;
 	
-	private static HUDManager getInstance() {
+	public static HUDManager getInstance() {
 		
 		if(instance != null) {
 			return instance;

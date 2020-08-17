@@ -603,6 +603,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
 
         this.renderGlobal.makeEntityOutlineShader();
+        Client.getInstance().start();
     }
 
     private void registerMetadataSerializers()
@@ -630,7 +631,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     private void createDisplay() throws LWJGLException
     {
         Display.setResizable(true);
-        Display.setTitle("Skyblock Client | Minecraft 1.8.8");
+        Display.setTitle("Skyblock Client By Jonathan Chen | Minecraft 1.8.8");
 
         try
         {
